@@ -167,7 +167,8 @@ function ReportPdf(props) {
             }
         </section> */}
        {details.negative.length>0&&<>
-         <h2 className="right">NEGATIVE: السلبى</h2>
+         {/* <h2 className="right">NEGATIVE: السلبى</h2> */}
+       <h2 className="right">NEGATIVE السلبى /<span style={{background:"green",textDecoration:'underline',textUnderlineOffset:'8px'}}>لم تظهر إصابة بالمرض</span></h2>
          <table className="ui celled table dark-border">
          <thead>
              <tr><th className="dark-border">S.N</th>
@@ -189,7 +190,7 @@ function ReportPdf(props) {
           {details.negative[0].bapat.length>0&&<td className="dark-border" data-label="Job">{item.bapat.toUpperCase()}</td>}
           {details.negative[0].bct.length>0&&<td className="dark-border" data-label="Job">{item.bct.toUpperCase()}</td>}
           {details.negative[0].celisa.length>0&&<td className="dark-border" data-label="Job">{item.celisa.toUpperCase()}</td>}
-          <td className="dark-border" data-label="Job">{item.judgement.toUpperCase()}</td>
+          <td className="dark-border negative1" data-label="Job"><b>{item.judgement.toUpperCase()}</b></td>
           </tr>)   
          }   
          </tbody>
@@ -199,7 +200,9 @@ function ReportPdf(props) {
          </>}
 
          {details.positive.length>0&&<>
-         <h2 className="right">POSITIVE:  الايجابى</h2>
+         {/* <h2 className="right">POSITIVE:  الايجابى</h2> */}
+       <h2 className="right">POSITIVE الايجابى /<span style={{background:"red",textDecoration:'underline',textUnderlineOffset:'8px'}}>مصاب بالمرض</span></h2>
+
          <table className="ui celled table dark-border">
          <thead>
              <tr><th className="dark-border">S.N</th>
@@ -221,7 +224,7 @@ function ReportPdf(props) {
           {details.positive[0].bapat.length>0&&<td className="dark-border" data-label="Job">{item.bapat.toUpperCase()}</td>}
           {details.positive[0].bct.length>0&&<td className="dark-border" data-label="Job">{item.bct.toUpperCase()}</td>}
           {details.positive[0].celisa.length>0&&<td className="dark-border" data-label="Job">{item.celisa.toUpperCase()}</td>}
-          <td className="dark-border" data-label="Job">{item.judgement.toUpperCase()}</td>
+          <td className="dark-border positive1" data-label="Job"><b>{item.judgement.toUpperCase()}</b></td>
           </tr>)   
          }
          </tbody>
@@ -231,7 +234,9 @@ function ReportPdf(props) {
 
 
          {details.suspect.length>0&&<>
-         <h2 className="right">SUSPECT: المشتبه</h2>
+         {/* <h2 className="right">SUSPECT: المشتبه</h2> */}
+       <h2 className="right">SUSPECT المشتبه /<span style={{background:"orange",textDecoration:'underline',textUnderlineOffset:'8px'}}> إصابة محتملة بالمرض</span></h2>
+
          <table className="ui celled table dark-border">
          <thead>
              <tr><th className="dark-border">S.N</th>
@@ -253,7 +258,7 @@ function ReportPdf(props) {
           {details.suspect[0].bapat.length>0&&<td className="dark-border" data-label="Job">{item.bapat.toUpperCase()}</td>}
           {details.suspect[0].bct.length>0&&<td className="dark-border" data-label="Job">{item.bct.toUpperCase()}</td>}
           {details.suspect[0].celisa.length>0&&<td className="dark-border" data-label="Job">{item.celisa.toUpperCase()}</td>}
-          <td className="dark-border" data-label="Job">{item.judgement.toUpperCase()}</td>
+          <td className="dark-border suspect" data-label="Job"><b>{item.judgement.toUpperCase()}</b></td>
           </tr>)   
          }
          </tbody>
@@ -324,7 +329,7 @@ function ReportPdf(props) {
 
 
          <section className="container-sixth">
-         <p className='note'> Note:-Mean Optical density &gt;  30 "POSITIVE" &lt; 30 "NEGATIVE"</p>
+         <p className='note'> Note:- cELISA Mean Optical density &gt;  30 "POSITIVE" &lt; 30 "NEGATIVE"</p>
             <p>OIE manual of terrestrial animals 2016 طرق الاختبار -</p>
             <p>­ إسناد القیاس: إسناد القیاس طبقا للنظام الدولي لوحدات القیاس باستخدام المعایرات والمواد المرجعیة
             </p>

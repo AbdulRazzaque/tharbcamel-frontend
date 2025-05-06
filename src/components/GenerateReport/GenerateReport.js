@@ -20,7 +20,6 @@ import EditValueModal from './EditValueModal';
 import DownloadIcon from '@mui/icons-material/Download';
 import date from 'date-and-time';
 import axios from 'axios';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import {useForm} from 'react-hook-form'
 import { styled } from '@mui/material/styles';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -217,7 +216,7 @@ function GenerateReport(props) {
         if(modalData.judgement==="Negative"){
             setNegative(
                 negative.map(i=>{
-                    if(i.microchip===modalData.microchip){
+                    if(i.neck===modalData.neck){
                         i[modalData.updateValue]=valueTest;
                     }
                     return i;
@@ -226,7 +225,7 @@ function GenerateReport(props) {
         }else if(modalData.judgement==="Positive"){
             setPositive(
                 positive.map(i=>{
-                    if(i.microchip===modalData.microchip){
+                    if(i.neck===modalData.neck){
                         i[modalData.updateValue]=valueTest;
                     }
                     return i;
@@ -236,7 +235,7 @@ function GenerateReport(props) {
         else if(modalData.judgement==="No Blood"){
             setNoBlood(
                 noBlood.map(i=>{
-                    if(i.microchip===modalData.microchip){
+                    if(i.neck===modalData.neck){
                         i[modalData.updateValue]=valueTest;
                     }
                     return i;
@@ -246,7 +245,7 @@ function GenerateReport(props) {
         else{
             setSuspect(
                 suspect.map(i=>{
-                    if(i.microchip===modalData.microchip){
+                    if(i.neck===modalData.neck){
                         i[modalData.updateValue]=valueTest;
                     }
                     return i;

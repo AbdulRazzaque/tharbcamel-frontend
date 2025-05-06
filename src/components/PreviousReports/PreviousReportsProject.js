@@ -23,6 +23,7 @@ function PreviousReportsProject(props) {
 
   React.useEffect(()=>{
     getAllReports()
+    window.scrollTo(0,0)
   },[])
 
   const handleSearch = ()=>{

@@ -219,7 +219,7 @@ function TharbProjectGR(props) {
         if(modalData.judgement==="Negative"){
             setNegative(
                 negative.map(i=>{
-                    if(i.microchip===modalData.microchip){
+                    if(i.neck===modalData.neck){
                         i[modalData.updateValue]=valueTest;
                     }
                     return i;
@@ -228,7 +228,7 @@ function TharbProjectGR(props) {
         }else if(modalData.judgement==="Positive"){
             setPositive(
                 positive.map(i=>{
-                    if(i.microchip===modalData.microchip){
+                    if(i.neck===modalData.neck){
                         i[modalData.updateValue]=valueTest;
                     }
                     return i;
@@ -238,7 +238,7 @@ function TharbProjectGR(props) {
         else if(modalData.judgement==="No Blood"){
             setNoBlood(
                 noBlood.map(i=>{
-                    if(i.microchip===modalData.microchip){
+                    if(i.neck===modalData.neck){
                         i[modalData.updateValue]=valueTest;
                     }
                     return i;
@@ -248,7 +248,7 @@ function TharbProjectGR(props) {
         else{
             setSuspect(
                 suspect.map(i=>{
-                    if(i.microchip===modalData.microchip){
+                    if(i.neck===modalData.neck){
                         i[modalData.updateValue]=valueTest;
                     }
                     return i;

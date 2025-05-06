@@ -129,6 +129,9 @@
       }
       
       @media print {
+        
+     
+         
         footer {
           position: fixed;
           p{
@@ -145,6 +148,16 @@
           width: 210mm;
           height: 297mm;
         }
+        .negative1{
+            color: green !important;
+        }
+        .positive1{
+            color: red !important;
+        }
+        .suspect{
+            color: orange !important;
+        }
+      
       }
      
     // footer {
@@ -224,6 +237,10 @@
     text-align: center !important;
     font-size: 19px;
 }
+.dark-border th,
+.dark-border td {
+  border: 1px solid #000; /* Customize the border style for table cells as needed */
+}
 .right-text{
     font-weight: bold !important;
     font-size: 1.2em;
@@ -282,4 +299,13 @@
 .note{
     // margin-bottom: 0;
     font-size: 22px;
+}
+.negative1{
+    color: green !important;
+}
+.positive1{
+    color: red !important;
+}
+.suspect{
+    color: orange !important;
 }
