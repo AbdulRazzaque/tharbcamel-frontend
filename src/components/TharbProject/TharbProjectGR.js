@@ -52,6 +52,7 @@ function TharbProjectGR(props) {
 
     //report creation hooks
     const [negative,setNegative]=React.useState([])
+    const [pending,setPending]=React.useState([])
     const [positive,setPositive] = React.useState([])
     const [suspect,setSuspect] = React.useState([])
     const [noBlood,setNoBlood] = React.useState([])
@@ -82,6 +83,7 @@ function TharbProjectGR(props) {
             setValue("sampleQuantity",editdetail.sampleQuantity)
             setBatchArray(editdetail.batchArray)
             setNegative(editdetail.negative)
+            setPending(editdetail.pending)
             setPositive(editdetail.positive)
             setNoBlood(editdetail.noBlood)
             setSuspect(editdetail.suspect)
@@ -144,10 +146,11 @@ function TharbProjectGR(props) {
         setPositive([])
         setSuspect([])
         setNoBlood([])
+        setPending([])
         setNegative(batchArray.map(item=>({...item,name:"",bapat:"-ve",bct:"-ve",celisa:"-ve",judgement:"Negative"})))
     }
 
-    console.log(negative,positive,suspect,batchArray)
+    console.log(negative,positive,pending,suspect,batchArray)
 
     const handleCheckboxChange = (test,hook,e)=>{
         console.log(e)
@@ -165,7 +168,24 @@ function TharbProjectGR(props) {
                 return item;
             })
             setNegative(arr)
-        } else if(hook==="positive"){
+        } 
+        else if(hook==="pending"){
+            let arr = pending.map(item=>{
+                if(e.target.checked===true){
+                    item[test] = "-ve";
+                    // if(test==="celisa"){
+                    //     item[test] = "0";
+                    // }
+                }else{
+                    item[test] = "";
+                }
+                
+                return item;
+            })
+            setPending(arr)
+        } 
+        
+        else if(hook==="positive"){
             let arr = positive.map(item=>{
                 if(e.target.checked===true){
                     item[test] = "+ve";
@@ -225,7 +245,19 @@ function TharbProjectGR(props) {
                     return i;
                 })
             )
-        }else if(modalData.judgement==="Positive"){
+        }
+        if(modalData.judgement==="Pending"){
+            setPending(
+                pending.map(i=>{
+                    if(i.neck===modalData.neck){
+                        i[modalData.updateValue]=valueTest;
+                    }
+                    return i;
+                })
+            )
+        }
+        
+        else if(modalData.judgement==="Positive"){
             setPositive(
                 positive.map(i=>{
                     if(i.neck===modalData.neck){
@@ -274,6 +306,7 @@ function TharbProjectGR(props) {
                 workOrderIncrementalValue:newOrderNumber,
                 mainDate,
                 negative,
+                pending,
                 positive,
                 noBlood,
                 suspect,
@@ -293,7 +326,7 @@ function TharbProjectGR(props) {
                     if(res.data.msg==="success"){
                         setMessage({type:"success",message:"Report Saved Successfully"})
                         if(download){
-                            props.history.push("/reportproject",{noBlood,negative,positive,suspect,comment,reportNumber,workOrderDate,mainDate,sampleQuantity:data.sampleQuantity,ownerName:data.ownerName,workOrder:`${workOrderDate}-P${newOrderNumber}`})
+                            props.history.push("/reportproject",{noBlood,negative,pending,positive,suspect,comment,reportNumber,workOrderDate,mainDate,sampleQuantity:data.sampleQuantity,ownerName:data.ownerName,workOrder:`${workOrderDate}-P${newOrderNumber}`})
                         }else{
                             window.location.reload(false);
                         }
@@ -314,7 +347,7 @@ function TharbProjectGR(props) {
                     if(res.data.msg==="success"){
                         setMessage({type:"success",message:"Report Saved Successfully"})
                         if(download){
-                            props.history.push("/reportproject",{noBlood,negative,positive,suspect,comment,reportNumber,workOrderDate,mainDate,sampleQuantity:data.sampleQuantity,ownerName:data.ownerName,workOrder:`${workOrderDate}-P${newOrderNumber}`})
+                            props.history.push("/reportproject",{noBlood,negative,pending,positive,suspect,comment,reportNumber,workOrderDate,mainDate,sampleQuantity:data.sampleQuantity,ownerName:data.ownerName,workOrder:`${workOrderDate}-P${newOrderNumber}`})
                         }else{
                             window.location.reload(false);
                         }
@@ -338,9 +371,14 @@ function TharbProjectGR(props) {
         console.log("itemis",item)
         if(addIn==="Positive"){
             setPositive([...positive,{...item,judgement:"Positive",bapat:"+ve",bct:"+ve",celisa:"+ve"}])
-        }else if(addIn==="Negative"){
+        }
+        else if(addIn==="Negative"){
             setNegative([...negative,{...item,judgement:"Negative",bapat:"-ve",bct:"-ve",celisa:"-ve"}])
-        }else if(addIn==="Suspect"){
+        }
+        else if(addIn==="Pending"){
+            setPending([...pending,{...item,judgement:"Pending",bapat:"-ve",bct:"-ve",celisa:"-ve"}])
+        }
+        else if(addIn==="Suspect"){
             setSuspect([...suspect,{...item,judgement:"Suspect",bapat:"±ve",bct:"±ve",celisa:"±ve"}])
         }else{
             //noblood
@@ -350,15 +388,21 @@ function TharbProjectGR(props) {
         //remove from array's condidtion
         if(removeFrom==="Positive"){
             setPositive(positive.filter(i=>i.neck!==item.neck))
-        }else if(removeFrom==="Negative"){
+        }
+        else if(removeFrom==="Negative"){
             setNegative(negative.filter(i=>i.neck!==item.neck))
-        }else if(removeFrom==="Suspect"){
+        }
+        else if(removeFrom==="Pending"){
+            setPending(pending.filter(i=>i.neck!==item.neck))
+        }
+        else if(removeFrom==="Suspect"){
             setSuspect(suspect.filter(i=>i.neck!==item.neck))
         }else{
             //noblood
             setNoBlood(noBlood.filter(i=>i.neck!==item.neck))
         }
     }
+    
   return (
     <div className="pt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -490,10 +534,10 @@ function TharbProjectGR(props) {
             {/* report mapping----------------------------- */}
 
 
-            {(negative.length>0 || positive.length>0 || suspect.length>0 || noBlood.length>0)&&<section className="generated-report-section">
+            {(negative?.length>0 || pending?.length>0 || positive?.length>0 || suspect?.length>0 || noBlood?.length>0)&&<section className="generated-report-section">
             <h1>Generated Report</h1>
 
-            {negative.length>0&&<div className="sample-div">
+            {negative?.length>0&&<div className="sample-div">
             <h2 className="my-5">Negative Samples</h2>
             <table className="ui celled table">
                 <thead>
@@ -511,7 +555,7 @@ function TharbProjectGR(props) {
                 </tr></thead>
             <tbody>
             {
-                negative.map((item,index)=>(
+                negative?.map((item,index)=>(
                     <tr key={index}>
                         <td>{item.sr?item.sr:index+1}</td>
                         <td>{item.rakumalmalik}</td>
@@ -545,6 +589,9 @@ function TharbProjectGR(props) {
                                 if(e.target.value==="Positive"){
                                     handleChangeStatus("Positive",item.judgement,item)
                                 }
+                                else if(e.target.value==="Pending"){
+                                    handleChangeStatus("Pending",item.judgement,item)
+                                }
                                 else if(e.target.value==="No Blood"){
                                     handleChangeStatus("No Blood",item.judgement,item)
                                 }
@@ -554,6 +601,7 @@ function TharbProjectGR(props) {
                             }}
                         >
                             <FormControlLabel value="Negative" disabled={item.judgement==="Negative"?true:false} control={<Radio  />} label="Negative" />
+                            <FormControlLabel value="Pending" disabled={item.judgement==="Pending"?true:false} control={<Radio  />} label="Pending" />
                             <FormControlLabel value="Positive" disabled={item.judgement==="Positive"?true:false} control={<Radio  />} label="Positive" />
                             <FormControlLabel value="Suspect" disabled={item.judgement==="Suspect"?true:false}  control={<Radio />} label="Suspect" />
                             <FormControlLabel value="No Blood" disabled={item.judgement==="No Blood"?true:false}  control={<Radio />} label="No Blood" />
@@ -575,8 +623,8 @@ function TharbProjectGR(props) {
             </div>}
 
 
-            {positive.length>0&&<div className="sample-div">
-            <h2 className="my-5">Positive Samples</h2>
+            {pending?.length>0&&<div className="sample-div">
+            <h2 className="my-5">Pending Samples</h2>
             <table className="ui celled table">
                 <thead>
                     <tr><th>Sr No</th>
@@ -593,7 +641,7 @@ function TharbProjectGR(props) {
                 </tr></thead>
             <tbody>
             {
-                positive.map((item,index)=>(
+                pending?.map((item,index)=>(
                     <tr key={index}>
                         <td>{item.sr?item.sr:index+1}</td>
                         <td>{item.rakumalmalik}</td>
@@ -627,6 +675,94 @@ function TharbProjectGR(props) {
                                 if(e.target.value==="Negative"){
                                     handleChangeStatus("Negative",item.judgement,item)
                                 }
+                                 
+                                else if(e.target.value==="No Blood"){
+                                    handleChangeStatus("No Blood",item.judgement,item)
+                                }
+                                    else if(e.target.value==="Suspect"){
+                                    handleChangeStatus("Suspect",item.judgement,item)
+                                }
+                                else{
+                                   handleChangeStatus("Positive",item.judgement,item)
+                                }
+                            }}
+                        >
+                            <FormControlLabel value="Negative"  control={<Radio  />} label="Negative" />
+                            <FormControlLabel value="Pending" disabled control={<Radio  />} label="Pending" />
+                            <FormControlLabel value="Positive"  control={<Radio  />} label="Positive" />
+                            <FormControlLabel value="Suspect"  control={<Radio />} label="Suspect" />
+                            <FormControlLabel value="No Blood" disabled={item.judgement==="No Blood"?true:false}  control={<Radio />} label="No Blood" />
+                        </RadioGroup>
+                        </FormControl>
+                        </td>
+                    </tr>
+                ))
+            }
+             </tbody>
+            </table>
+            <FormGroup
+            row
+            >
+            <FormControlLabel onChange={(e)=>handleCheckboxChange("bapat","pending",e)} control={<Checkbox defaultChecked />} label="BAPAT" />
+            <FormControlLabel onChange={(e)=>handleCheckboxChange("bct","pending",e)} control={<Checkbox defaultChecked />} label="BCT" />
+            <FormControlLabel onChange={(e)=>handleCheckboxChange("celisa","pending",e)} control={<Checkbox defaultChecked />} label="cElisa" />
+            </FormGroup>
+            </div>}
+            {positive?.length>0&&<div className="sample-div">
+            <h2 className="my-5">Positive Samples</h2>
+            <table className="ui celled table">
+                <thead>
+                    <tr><th>Sr No</th>
+                    <th>Rakumalmalik</th>
+                    <th>Microchip</th>
+                    <th>Neck</th>
+                    <th>Bullname</th>
+                    <th>Name</th>
+                    <th>BAPAT</th>
+                    <th>BCT</th>
+                    <th>cElisa</th>
+                    <th>judgement</th>
+                    <th>Change Judgement</th>
+                </tr></thead>
+            <tbody>
+            {
+                positive?.map((item,index)=>(
+                    <tr key={index}>
+                        <td>{item.sr?item.sr:index+1}</td>
+                        <td>{item.rakumalmalik}</td>
+                        <td>{item.microchip}</td>
+                        <td>{item.neck}</td>
+                        <td>{item.bullname}</td>
+                        <td>{item.name}</td>
+                        <td>{item.bapat} {item.bapat&&<IconButton onClick={()=>{
+                            setModalData({...item,updateValue:"bapat"})
+                            setOpen(true)
+                        }}><EditIcon sx={{fontSize:18}} /></IconButton>}</td>
+                        <td>{item.bct} {item.bct&&<IconButton onClick={()=>{
+                            setModalData({...item,updateValue:"bct"})
+                            setOpen(true)
+                        }}><EditIcon sx={{fontSize:18}} /></IconButton>}</td>
+                        <td>{item.celisa} {item.celisa&&<IconButton onClick={()=>{
+                            setModalData({...item,updateValue:"celisa"})
+                            setOpen(true)
+                        }}><EditIcon sx={{fontSize:18}} /></IconButton>}</td>
+                        <td style={{color:"red"}}>{item.judgement.toUpperCase()}</td>
+                        <td>
+                        <FormControl>
+                        {/* <FormLabel id="demo-row-radio-buttons-group-label">Select Status</FormLabel> */}
+                        <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                            value={item.judgement}
+                            onChange={(e)=>{
+                                console.log(e)
+                                if(e.target.value==="Negative"){
+                                    handleChangeStatus("Negative",item.judgement,item)
+                                }
+                                else if(e.target.value==="Pending"){
+                                    handleChangeStatus("Pending",item.judgement,item)
+                                }
                                 else if(e.target.value==="No Blood"){
                                     handleChangeStatus("No Blood",item.judgement,item)
                                 }
@@ -636,6 +772,7 @@ function TharbProjectGR(props) {
                             }}
                         >
                             <FormControlLabel value="Negative"  control={<Radio  />} label="Negative" />
+                            <FormControlLabel value="Pending"  control={<Radio  />} label="Pending" />
                             <FormControlLabel value="Positive" disabled control={<Radio  />} label="Positive" />
                             <FormControlLabel value="Suspect"  control={<Radio />} label="Suspect" />
                             <FormControlLabel value="No Blood" disabled={item.judgement==="No Blood"?true:false}  control={<Radio />} label="No Blood" />
@@ -657,7 +794,7 @@ function TharbProjectGR(props) {
             </div>}
 
 
-            {suspect.length>0&&<div className="sample-div">
+            {suspect?.length>0&&<div className="sample-div">
             <h2 className="my-5">Suspect Samples</h2>
             <table className="ui celled table">
                 <thead>
@@ -675,7 +812,7 @@ function TharbProjectGR(props) {
                 </tr></thead>
             <tbody>
             {
-                suspect.map((item,index)=>(
+                suspect?.map((item,index)=>(
                     <tr key={index}>
                         <td>{item.sr?item.sr:index+1}</td>
                         <td>{item.rakumalmalik}</td>
@@ -709,6 +846,10 @@ function TharbProjectGR(props) {
                                 if(e.target.value==="Negative"){
                                     handleChangeStatus("Negative",item.judgement,item)
                                 }
+                                else if(e.target.value==="Pending"){
+                                    handleChangeStatus("Pending",item.judgement,item)
+                                }
+                                
                                 else if(e.target.value==="No Blood"){
                                     handleChangeStatus("No Blood",item.judgement,item)
                                 }
@@ -718,6 +859,7 @@ function TharbProjectGR(props) {
                             }}
                         >
                             <FormControlLabel value="Negative"  control={<Radio  />} label="Negative" />
+                            <FormControlLabel value="Pending"  control={<Radio  />} label="Pending" />
                             <FormControlLabel value="Positive"  control={<Radio  />} label="Positive" />
                             <FormControlLabel value="Suspect" disabled control={<Radio />} label="Suspect" />
                             <FormControlLabel value="No Blood" disabled={item.judgement==="No Blood"?true:false}  control={<Radio />} label="No Blood" />
@@ -738,7 +880,7 @@ function TharbProjectGR(props) {
             </FormGroup>
             </div>}
 
-            {noBlood.length>0&&<div className="sample-div">
+            {noBlood?.length>0&&<div className="sample-div">
             <h2 className="my-5">No Blood Samples</h2>
             <table className="ui celled table">
                 <thead>
@@ -754,7 +896,7 @@ function TharbProjectGR(props) {
                 </tr></thead>
             <tbody>
             {
-                noBlood.map((item,index)=>(
+                noBlood?.map((item,index)=>(
                     <tr key={index}>
                         <td>{item.sr?item.sr:index+1}</td>
                         <td>{item.microchip}</td>
@@ -786,6 +928,9 @@ function TharbProjectGR(props) {
                                 if(e.target.value==="Negative"){
                                     handleChangeStatus("Negative",item.judgement,item)
                                 }
+                                else if(e.target.value==="Pending"){
+                                    handleChangeStatus("Pending",item.judgement,item)
+                                }
                                 else if(e.target.value==="Positive"){
                                     handleChangeStatus("Positive",item.judgement,item)
                                 }
@@ -798,6 +943,7 @@ function TharbProjectGR(props) {
                             <FormControlLabel value="Positive"  control={<Radio  />} label="Positive" />
                             <FormControlLabel value="Suspect" disabled control={<Radio />} label="Suspect" /> */}
                             <FormControlLabel value="Negative" disabled={item.judgement==="Negative"?true:false} control={<Radio  />} label="Negative" />
+                            <FormControlLabel value="Pending" disabled={item.judgement==="Pending"?true:false} control={<Radio  />} label="Pending" />
                             <FormControlLabel value="Positive" disabled={item.judgement==="Positive"?true:false} control={<Radio  />} label="Positive" />
                             <FormControlLabel value="Suspect" disabled={item.judgement==="Suspect"?true:false}  control={<Radio />} label="Suspect" />
                             <FormControlLabel value="No Blood" disabled={item.judgement==="No Blood"?true:false}  control={<Radio />} label="No Blood" />

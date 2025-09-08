@@ -94,6 +94,9 @@ function ReportPdf(props) {
             <h2>المشتبه</h2>
             </div>
             <div className="col-2 heading">
+            <h2>قيد الانتظار</h2>
+            </div>
+            <div className="col-2 heading">
             <h2>الايجابى</h2>
             </div>
             <div className="col-2 heading">
@@ -112,16 +115,20 @@ function ReportPdf(props) {
             <h2>{details.suspect.length}</h2>
             </div>
             <div className="col-2 heading-value">
+            <h2>{details.pending.length}</h2>
+            </div>
+            <div className="col-2 heading-value">
             <h2>{details.positive.length}</h2>
             </div>
+            
             <div className="col-2 heading-value">
 
             <h2>{details.noBlood.length}</h2>
             </div>
             <div className="col-2 heading-value">
-            <h2>{details.negative.length+details.suspect.length+details.positive.length+details.noBlood.length}</h2>
+            <h2>{details.negative.length+details.pending.length+details.suspect.length+details.positive.length+details.noBlood.length}</h2>
 
-
+   
             </div>
         </div>
         </section>
@@ -176,7 +183,7 @@ function ReportPdf(props) {
              <th className="dark-border">Neck</th>
              <th className="dark-border">Name</th>
              {details.negative[0].bapat.length>0&&<th className="dark-border">BAPAT</th>}
-             {details.negative[0].bct.length>0&&<th className="dark-border">BCT</th>}
+             {details.negative[0].bct.length>0&&<th className="dark-border">RBT</th>}
              {details.negative[0].celisa.length>0&&<th className="dark-border">cElisa</th>}
              <th className="dark-border">JUDGEMENT</th>
          </tr></thead>
@@ -198,6 +205,39 @@ function ReportPdf(props) {
          </table>
         
          </>}
+       {details.pending.length>0&&<>
+         {/* <h2 className="right">NEGATIVE: السلبى</h2> */}
+       {/* <h2 className="right">Pending السلبى /<span style={{background:"green",textDecoration:'underline',textUnderlineOffset:'8px'}}>لم تظهر إصابة بالمرض</span></h2> */}
+           <h2 className="right">Pending / قيد الانتظار</h2>
+         <table className="ui celled table dark-border">
+         <thead>
+             <tr><th className="dark-border">S.N</th>
+             <th className="dark-border">Microchip</th>
+             <th className="dark-border">Neck</th>
+             <th className="dark-border">Name</th>
+             {details.pending[0].bapat.length>0&&<th className="dark-border">BAPAT</th>}
+             {details.pending[0].bct.length>0&&<th className="dark-border">RBT</th>}
+             {details.pending[0].celisa.length>0&&<th className="dark-border">cElisa</th>}
+             <th className="dark-border">JUDGEMENT</th>
+         </tr></thead>
+         <tbody>
+         {
+          details.pending.map((item,index)=><tr>
+          <td className="dark-border" data-label="Name">{index+1}</td>
+          <td className="dark-border" data-label="Age">{item.microchip}</td>
+          <td className="dark-border" data-label="Job">{item.neck}</td>
+          <td className="dark-border" data-label="Job"></td>
+          {details.pending[0].bapat.length>0&&<td className="dark-border" data-label="Job">{item.bapat.toUpperCase()}</td>}
+          {details.pending[0].bct.length>0&&<td className="dark-border" data-label="Job">{item.bct.toUpperCase()}</td>}
+          {details.pending[0].celisa.length>0&&<td className="dark-border" data-label="Job">{item.celisa.toUpperCase()}</td>}
+          <td className="dark-border pending" data-label="Job"><b>{item.judgement.toUpperCase()}</b></td>
+          </tr>)   
+         }   
+         </tbody>
+       
+         </table>
+        
+         </>}
 
          {details.positive.length>0&&<>
          {/* <h2 className="right">POSITIVE:  الايجابى</h2> */}
@@ -210,7 +250,7 @@ function ReportPdf(props) {
              <th className="dark-border">Neck</th>
              <th className="dark-border">Name</th>
              {details.positive[0].bapat.length>0&&<th className="dark-border">BAPAT</th>}
-             {details.positive[0].bct.length>0&&<th className="dark-border">BCT</th>}
+             {details.positive[0].bct.length>0&&<th className="dark-border">RBT</th>}
              {details.positive[0].celisa.length>0&&<th className="dark-border">cElisa</th>}
              <th className="dark-border">JUDGEMENT</th>
          </tr></thead>
@@ -244,7 +284,7 @@ function ReportPdf(props) {
              <th className="dark-border">Neck</th>
              <th className="dark-border">Name</th>
              {details.suspect[0].bapat.length>0&&<th className="dark-border">BAPAT</th>}
-             {details.suspect[0].bct.length>0&&<th className="dark-border">BCT</th>}
+             {details.suspect[0].bct.length>0&&<th className="dark-border">RBT</th>}
              {details.suspect[0].celisa.length>0&&<th className="dark-border">cElisa</th>}
              <th className="dark-border">JUDGEMENT</th>
          </tr></thead>
@@ -305,7 +345,7 @@ function ReportPdf(props) {
              <th className="dark-border">Neck</th>
              <th className="dark-border">Name</th>
              {details.noBlood[0].bapat.length>0&&<th className="dark-border">BAPAT</th>}
-             {details.noBlood[0].bct.length>0&&<th className="dark-border">BCT</th>}
+             {details.noBlood[0].bct.length>0&&<th className="dark-border">RBT</th>}
              {details.noBlood[0].celisa.length>0&&<th className="dark-border">cElisa</th>}
              <th className="dark-border">JUDGEMENT</th>
          </tr></thead>

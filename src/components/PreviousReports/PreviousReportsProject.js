@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../Header/Header'
 import "./PreviousReports.scss"
 import EditIcon from '@mui/icons-material/Edit';
@@ -13,7 +13,7 @@ function PreviousReportsProject(props) {
   const [searchText,setSearchText]=React.useState("")
   const [open,setOpen]=React.useState(false)
   const [singleReport,setSingleReport]=React.useState(null)
-
+  const [visibleCount, setVisibleCount] = useState(50);
   const getAllReports = ()=>{
     axios.get(`${process.env.REACT_APP_DEVELOPMENT}/api/reportproject/getAllReports`,{headers:{token:props.user.user}})
     .then(res=>{
@@ -26,15 +26,46 @@ function PreviousReportsProject(props) {
     window.scrollTo(0,0)
   },[])
 
-  const handleSearch = ()=>{
-    axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/reportproject/searchReport`,{reportNumberString:searchText},{headers:{token:props.user.user}})
-    .then(res=>{
-      console.log(res)
-      if(res.data.result){
-        setAllReports([res.data.result])
+   // scroll listener
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop + 1 >=
+        document.documentElement.scrollHeight
+      ) {
+        setVisibleCount((prev) => prev + 100); // next 100 load
       }
-    })
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // const handleSearch = ()=>{
+  //   axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/reportproject/searchReport`,{reportNumberString:searchText},{headers:{token:props.user.user}})
+  //   .then(res=>{
+  //     console.log(res)
+  //     if(res.data.result){
+  //       setAllReports([res.data.result])
+  //     }
+  //   })
+  // }
+const handleSearch = async () => {
+  if (!searchText.trim()) return;
+console.log(searchText)
+  try {
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_DEVELOPMENT}/api/reportproject/searchReport`,
+      { reportNumberString: searchText },
+      { headers: { token: props.user.user } }
+    );
+
+    setAllReports(data?.result ? [data.result] : []);
+  } catch (error) {
+    console.error("Search error:", error.response?.data || error.message);
+    setAllReports([]);
   }
+};
 
   const handleSubmit = ()=>{
     axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/reportproject/deleteReport`,{reportId:singleReport._id},{headers:{token:props.user.user}})
@@ -45,6 +76,7 @@ function PreviousReportsProject(props) {
     })
   }
 
+  console.log(allReports)
   return (
     <div>
       <TwoBDialog 
@@ -78,7 +110,8 @@ function PreviousReportsProject(props) {
         </tr></thead>
         <tbody>
           {
-            allReports.length>0&&allReports.map((item,index)=>(
+
+            allReports.slice(0, visibleCount).map((item, index) => (
               <tr key={index}>
               <td>{item.reportNumberString}</td>
               <td>{item.workOrder.initials}-P{item.workOrder.incrementalValue}</td>

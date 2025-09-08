@@ -90,6 +90,9 @@ function Reportproject(props) {
             <div className="col-2 heading">              
                 <h2>السلبى</h2>
             </div>
+            <div className="col-2 heading">              
+                <h2>قيد الانتظار</h2>
+            </div>
             <div className="col-2 heading">
                 <h2>المشتبه</h2>
             </div>
@@ -108,6 +111,9 @@ function Reportproject(props) {
                 <h2>{details.negative.length}</h2>              
             </div>
             <div className="col-2 heading-value">
+                <h2>{details.pending.length}</h2>              
+            </div>
+            <div className="col-2 heading-value">
             <h2>{details.suspect.length}</h2>
             </div>
             <div className="col-2 heading-value">
@@ -117,14 +123,14 @@ function Reportproject(props) {
             <h2>{details.noBlood.length}</h2>
             </div>
             <div className="col-2 heading-value">
-            <h2>{details.negative.length+details.suspect.length+details.positive.length+details.noBlood.length}</h2>
+            <h2>{details.negative.length+details.pending.length+details.suspect.length+details.positive.length+details.noBlood.length}</h2>
             </div>
         </div>
         </section>
 
         <h1 className='tfasil' style={{textAlign:"center"}}>تفاصيل الاختبار</h1>
 
-        {details.negative.length>0&&<>
+        {details?.negative.length>0&&<>
        <h2 className="right">NEGATIVE السلبى /<span style={{background:"green",textDecoration:'underline',textUnderlineOffset:'8px'}}>لم تظهر إصابة بالمرض</span></h2>
         {/* <table className="table dark-border"> */}
         <table className="ui celled table dark-border">
@@ -135,13 +141,13 @@ function Reportproject(props) {
             <th className="dark-border" >رقم الشريحة</th>
             <th className="dark-border" >اسم الفحل</th>
             {details.negative[0].bapat.length>0&&<th className="dark-border">BAPAT</th>}
-             {details.negative[0].bct.length>0&&<th className="dark-border">BCT</th>}
+             {details.negative[0].bct.length>0&&<th className="dark-border">RBT</th>}
              {details.negative[0].celisa.length>0&&<th className="dark-border">cElisa</th>}
             <th className="dark-border">النتيجة</th>
         </tr></thead>
         <tbody>
         {
-         details.negative.map((item,index)=><tr >
+         details?.negative.map((item,index)=><tr >
          <td className="dark-border"  data-label="Name">{index+1}</td>
          <td className="dark-border"  data-label="Job">{item.neck}</td>
          <td className="dark-border" >{item.rakumalmalik}</td>
@@ -157,7 +163,41 @@ function Reportproject(props) {
         </table>
         </>}
 
-        {details.positive.length>0&&<>
+        {details?.pending?.length>0&&<>
+        {/* <h2 className="right">POSITIVE: الايجابى</h2> */}
+       <h2 className="right">Pending / قيد الانتظار</h2>
+
+        <table className="ui celled table dark-border">
+        <thead>
+            <tr><th className="dark-border">م</th>
+            <th className="dark-border">رقم الرقبة</th>
+            <th className="dark-border">رقم المالك</th>
+            <th className="dark-border">رقم الشريحة</th>
+            <th className="dark-border">اسم الفحل</th>
+            {details.pending[0].bapat.length>0&&<th className="dark-border">BAPAT</th>}
+             {details.pending[0].bct.length>0&&<th className="dark-border">RBT</th>}
+             {details.pending[0].celisa.length>0&&<th className="dark-border">cElisa</th>}
+            <th className="dark-border">النتيجة</th>
+        </tr></thead>
+        <tbody>
+        {
+         details?.pending.map((item,index)=><tr>
+         <td className="dark-border"  data-label="Name">{index+1}</td>
+         <td className="dark-border"  data-label="Job">{item.neck}</td>
+         <td className="dark-border" >{item.rakumalmalik}</td>
+         <td className="dark-border"  data-label="Age">{item.microchip}</td>
+         <td className="dark-border"  data-label="Job">{item.bullname}</td>
+         {details.pending[0].bapat.length>0&&<td className="dark-border" data-label="Job">{item.bapat.toUpperCase()}</td>}
+          {details.pending[0].bct.length>0&&<td className="dark-border" data-label="Job">{item.bct.toUpperCase()}</td>}
+          {details.pending[0].celisa.length>0&&<td className="dark-border" data-label="Job">{item.celisa.toUpperCase()}</td>}
+         <td className="dark-border pending"  data-label="Job"><b>{item.judgement.toUpperCase()}</b> </td>
+         </tr>)   
+        }
+        </tbody>
+        </table>
+        </>}
+
+        {details?.positive.length>0&&<>
         {/* <h2 className="right">POSITIVE: الايجابى</h2> */}
        <h2 className="right">POSITIVE الايجابى /<span style={{background:"red",textDecoration:'underline',textUnderlineOffset:'8px'}}>مصاب بالمرض</span></h2>
 
@@ -169,13 +209,13 @@ function Reportproject(props) {
             <th className="dark-border">رقم الشريحة</th>
             <th className="dark-border">اسم الفحل</th>
             {details.positive[0].bapat.length>0&&<th className="dark-border">BAPAT</th>}
-             {details.positive[0].bct.length>0&&<th className="dark-border">BCT</th>}
+             {details.positive[0].bct.length>0&&<th className="dark-border">RBT</th>}
              {details.positive[0].celisa.length>0&&<th className="dark-border">cElisa</th>}
             <th className="dark-border">النتيجة</th>
         </tr></thead>
         <tbody>
         {
-         details.positive.map((item,index)=><tr>
+         details?.positive.map((item,index)=><tr>
          <td className="dark-border"  data-label="Name">{index+1}</td>
          <td className="dark-border"  data-label="Job">{item.neck}</td>
          <td className="dark-border" >{item.rakumalmalik}</td>
@@ -192,7 +232,7 @@ function Reportproject(props) {
         </>}
 
 
-        {details.suspect.length>0&&<>
+        {details?.suspect.length>0&&<>
         {/* <h2 className="right">SUSPECT: المشتبه</h2> */}
        <h2 className="right">SUSPECT المشتبه /<span style={{background:"orange",textDecoration:'underline',textUnderlineOffset:'8px'}}> إصابة محتملة بالمرض</span></h2>
 
@@ -204,13 +244,13 @@ function Reportproject(props) {
             <th className="dark-border">رقم الشريحة</th>
             <th className="dark-border">اسم الفحل</th>
             {details.suspect[0].bapat.length>0&&<th className="dark-border">BAPAT</th>}
-             {details.suspect[0].bct.length>0&&<th className="dark-border">BCT</th>}
+             {details.suspect[0].bct.length>0&&<th className="dark-border">RBT</th>}
              {details.suspect[0].celisa.length>0&&<th className="dark-border">cElisa</th>}
             <th className="dark-border">النتيجة</th>
         </tr></thead>
         <tbody>
         {
-         details.suspect.map((item,index)=><tr>
+         details?.suspect.map((item,index)=><tr>
          <td className="dark-border"  data-label="Name">{index+1}</td>
          <td className="dark-border"  data-label="Job">{item.neck}</td>
          <td className="dark-border">{item.rakumalmalik}</td>
@@ -225,7 +265,7 @@ function Reportproject(props) {
         </tbody>
         </table>
         </>}
-        {details.noBlood.length>0&&<>
+        {details?.noBlood.length>0&&<>
          <h3 className="right">No Blood :بدون دم</h3>
          <table className="ui celled table dark-border">
          <thead>
@@ -237,13 +277,13 @@ function Reportproject(props) {
              
              <th className="dark-border">Name</th>
              {details.noBlood[0].bapat.length>0&&<th className="dark-border">BAPAT</th>}
-             {details.noBlood[0].bct.length>0&&<th className="dark-border">BCT</th>}
+             {details.noBlood[0].bct.length>0&&<th className="dark-border">RBT</th>}
              {details.noBlood[0].celisa.length>0&&<th className="dark-border">cElisa</th>}
              <th className="dark-border">JUDGEMENT</th>
          </tr></thead>
          <tbody>
          {
-          details.noBlood.map((item,index)=><tr>
+          details?.noBlood.map((item,index)=><tr>
           <td className="dark-border" data-label="Name">{index+1}</td>
           <td className="dark-border" data-label="Job">{item.neck}</td>
           <td className="dark-border">{item.rakumalmalik}</td>
