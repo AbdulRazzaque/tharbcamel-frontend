@@ -538,7 +538,7 @@ function GenerateReport(props) {
                     <th>Neck</th>
                     <th>Name</th>
                     <th>BAPAT</th>
-                    <th>BCT</th>
+                    <th>RBT</th>
                     <th>cElisa</th>
                     <th>judgement</th>
                     <th>Change Judgement</th>
@@ -621,7 +621,7 @@ function GenerateReport(props) {
                     <th>Neck</th>
                     <th>Name</th>
                     <th>BAPAT</th>
-                    <th>BCT</th>
+                    <th>RBT</th>
                     <th>cElisa</th>
                     <th>judgement</th>
                     <th>Change Judgement</th>
@@ -703,7 +703,7 @@ function GenerateReport(props) {
                     <th>Neck</th>
                     <th>Name</th>
                     <th>BAPAT</th>
-                    <th>BCT</th>
+                    <th>RBT</th>
                     <th>cElisa</th>
                     <th>judgement</th>
                     <th>Change Judgement</th>
@@ -785,7 +785,7 @@ function GenerateReport(props) {
                     <th>Neck</th>
                     <th>Name</th>
                     <th>BAPAT</th>
-                    <th>BCT</th>
+                    <th>RBT</th>
                     <th>cElisa</th>
                     <th>judgement</th>
                     <th>Change Judgement</th>
@@ -867,7 +867,7 @@ function GenerateReport(props) {
                     <th>Neck</th>
                     <th>Name</th>
                     <th>BAPAT</th>
-                    <th>BCT</th>
+                    <th>RBT</th>
                     <th>cElisa</th>
                     <th>judgement</th>
                     <th>Change Judgement</th>
