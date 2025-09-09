@@ -5,7 +5,6 @@ import {setUser} from '../redux/user/userActions'
 import { TextField,Button, Alert } from '@mui/material'
 import {useForm} from 'react-hook-form'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
 function SignUp(props) {
   const {handleSubmit,register,formState:{errors}}=useForm()
   const [error,setError]=React.useState("")

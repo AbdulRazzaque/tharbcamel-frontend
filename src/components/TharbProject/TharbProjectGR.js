@@ -1,6 +1,5 @@
 import React from 'react'
 import "./GenerateReport.scss"
-import Header from '../Header/Header'
 import { TextField,Button,IconButton,Alert } from '@mui/material'
 import Autocomplete from '@mui/material/Autocomplete';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -11,13 +10,10 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
-import { Edit } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import EditValueModal from './EditValueModal';
-import DownloadIcon from '@mui/icons-material/Download';
 import date from 'date-and-time';
 import axios from 'axios';
 import {useForm} from 'react-hook-form'
@@ -36,7 +32,6 @@ function TharbProjectGR(props) {
     const {handleSubmit,register,formState:{errors},setValue}=useForm()
 
     const [sampleType, setSampleType] = React.useState('Blood');
-    const [RadioValue, setRadioValue] = React.useState('');
     const [testRequired,setTestRequired] = React.useState('Brucella')
     const [organization,setOrganization] = React.useState(options[0])
     const [comment,setComment]=React.useState("")

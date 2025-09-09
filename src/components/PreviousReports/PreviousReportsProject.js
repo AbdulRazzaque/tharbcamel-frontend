@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Header from '../Header/Header'
 import "./PreviousReports.scss"
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -41,15 +40,7 @@ function PreviousReportsProject(props) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // const handleSearch = ()=>{
-  //   axios.post(`${process.env.REACT_APP_DEVELOPMENT}/api/reportproject/searchReport`,{reportNumberString:searchText},{headers:{token:props.user.user}})
-  //   .then(res=>{
-  //     console.log(res)
-  //     if(res.data.result){
-  //       setAllReports([res.data.result])
-  //     }
-  //   })
-  // }
+
 const handleSearch = async () => {
   if (!searchText.trim()) return;
 console.log(searchText)
